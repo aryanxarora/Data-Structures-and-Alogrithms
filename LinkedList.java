@@ -107,23 +107,41 @@ public class LinkedList {
         return i.data;
     }
     
+    public boolean checkDuplicate(){
+        Node pointer = head;
+        while(pointer != null && pointer.next != null){
+            if(pointer.data == pointer.next.data){
+                return true;
+            }
+            pointer = pointer.next;
+        }
+        return false;
+    }
+    
+    public void reverseList(){
+        Node current = head;
+        Node previous = null;
+        Node next = null;
+        while(current != null){
+            next = current.next;
+            current.next = previous;
+            previous = current;
+            current = next;
+        }
+        head = previous;
+    }
+    
     public static void main(String[] args) {
         LinkedList list = new LinkedList();
         list.addStart(1);
-        list.addStart(2);
-        list.addStart(3);
-        list.addStart(30);
-        list.addStart(300);
-        list.printList();
-        list.delete(2);
-        list.printList();
+        list.addEnd(2);
+        list.addEnd(3);
         list.addEnd(4);
+        list.addEnd(5);
+        list.addEnd(6);
+        list.addEnd(7);
+        list.reverseList();
         list.printList();
-        list.insert(1, 2);
-        list.printList();
-        list.delete(300);
-        list.printList();
-        System.out.println(list.printMid());
     }
     
 }
