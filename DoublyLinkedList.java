@@ -75,7 +75,9 @@ public class DoublyLinkedList {
             if(pointer.data == data)
             {
                 Node temp = pointer;
-                pointer.next.prev = pointer.prev;
+                if(pointer.next != null){
+                    pointer.next.prev = pointer.prev;
+                }
                 pointer.prev.next = temp.next;
             }
             pointer = pointer.next;
