@@ -5,6 +5,8 @@
  */
 package sandbox;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author 2219549
@@ -131,6 +133,35 @@ public class LinkedList {
         head = previous;
     }
     
+    public boolean detectLoop(){
+        ArrayList<Node> list = new ArrayList<Node>();
+        boolean loop = false;
+        
+        Node pointer = head;
+        while(pointer != null){
+            if(list.contains(pointer)){
+                loop = true;
+                break;
+            }
+            list.add(pointer);
+            pointer = pointer.next;
+        }
+        
+        return loop;
+    }
+    
+    public void removeLoop(){
+        ArrayList<Node> list = new ArrayList<Node>();
+        Node pointer = head;
+        while(pointer != null){
+            if(list.contains(pointer.next)){
+                pointer.next = null;
+            }
+            list.add(pointer);
+            pointer = pointer.next;
+        }
+    }
+    
     public static void main(String[] args) {
         LinkedList list = new LinkedList();
         list.addStart(1);
@@ -138,9 +169,14 @@ public class LinkedList {
         list.addEnd(3);
         list.addEnd(4);
         list.addEnd(5);
+        list.addEnd(3);
         list.addEnd(6);
         list.addEnd(7);
-        list.reverseList();
+        list.head.next.next.next.next.next.next.next.next = list.head.next.next;
+        System.out.println(list.detectLoop());
+        if(list.detectLoop()){
+            list.removeLoop();
+        }
         list.printList();
     }
     
