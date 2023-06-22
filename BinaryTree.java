@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sandbox;
+package sanbox;
 
 /**
  *
@@ -82,10 +82,54 @@ public class BinaryTree {
         if(node == null){
             return;
         } else {
-            System.out.println(node.key + " ");
+            System.out.print(node.key + " ");
             print(node.left);
             print(node.right);
         }
+    }
+    
+    public boolean isBalanced(Node node){
+        if(node == null){
+            return true;
+        }
+        int left = getHeight(node.left);
+        int right = getHeight(node.right);
+        
+        if(Math.abs(left - right) > 1){
+            return false;
+        }
+        return isBalanced(node.left) && isBalanced(node.right);
+    }
+    
+    private int getHeight(Node node){
+        if(node == null){
+            return 0;
+        }
+        int left = getHeight(node.left);
+        int right = getHeight(node.right);
+        
+        return Math.max(left, right) + 1;
+    }
+    
+    public void getMinNode(Node node){
+        if(node.left == null){
+            System.out.println("Minimum node: " + node.key);
+        } else {
+            getMinNode(node.left);
+        }
+    }
+    
+    public Node sortedArraytoBalancedBST(int[] arr, int left, int right){
+        if(left > right){
+            return null;
+        }
+        
+        int mid = left + (right - left)/2;
+        Node root = new Node(arr[mid]);
+        root.left = sortedArraytoBalancedBST(arr, left, mid-1);
+        root.right = sortedArraytoBalancedBST(arr, mid + 1, right);
+        
+        return root;
     }
     
     public static void main(String[] args) {
@@ -105,17 +149,35 @@ public class BinaryTree {
 //        tree.addNode(23);
 //        tree.addNode(30);
 
-        tree.root = new Node(10);
-        tree.root.left = new Node(5);
-        tree.root.right = new Node(30);
+//        tree.root = new Node(10);
+//        tree.root.left = new Node(5);
+//        tree.root.right = new Node(30);
         
-        tree.print(tree.root);
+//        tree.print(tree.root);
+//        
+//        if(tree.isBST(tree.root) == 1){
+//            System.out.println("Is BST");
+//        } else {
+//            System.out.println("Not BST");
+//        }
+
+        tree.root = new Node (1);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
+        tree.root.left.right = new Node(5);
         
-        if(tree.isBST(tree.root) == 1){
-            System.out.println("Is BST");
+        if(tree.isBalanced(tree.root)){
+            System.out.println("Tree is Balanced");
         } else {
-            System.out.println("Not BST");
+            System.out.println("Tree is Not Balanced");
         }
+        
+        int[] arr = {1, 2, 3, 4, 5, 6, 7};
+        Node bst = tree.sortedArraytoBalancedBST(arr, 0, arr.length - 1);
+        tree.print(bst);
+        System.out.println("");
+        tree.getMinNode(bst);
     }
     
 }
