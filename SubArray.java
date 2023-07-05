@@ -1,64 +1,79 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package sandbox;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import java.io.*;
+import java.util.*;
+ 
 /**
  *
  * @author 2219549
  */
+// User defined pair class
+class Pair
+{
+    int first, second;
+    Pair(int a, int b)
+    {
+        first = a;
+        second = b;
+    }
+}
+public class SubArray {
 
-public class Sandbox {
-
-    /**
-     * @param args the command line arguments
-     */
-    
-    static class Pair {
-        int first, second;
-        Pair(int a, int b) {
-            first = a;
-            second = b;
-        }
+    // Utility function to print all subarrays with sum 0
+    static void print(ArrayList<Pair> out)
+    {
+            for (int i = 0; i < out.size(); i++)
+            {
+                Pair p = out.get(i);
+                System.out.println("Subarray found from Index "
+                        + p.first + " to " + p.second);
+            }
     }
     
-    static ArrayList<Pair> findSubArrays(int[] arr, int n){
-        
-        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
-        ArrayList<Pair> out = new ArrayList<Pair>();
-        
-        for(int i = 0; i < n; i++){
-            ArrayList<Integer> temp = new ArrayList<Integer>();
-            int sum = 0;
-            for(int j = i; j < n; j++){
-                sum += arr[j];
-                if(sum == 0){
-                    System.out.println("Subarray: " + i + " " + j);
-                    temp.add(j);
+
+    static ArrayList<Pair> findSubArrays(int[] arr, int n)
+    {
+        //hints:
+        HashMap<Integer,ArrayList<Integer>> map = new HashMap<>();   
+        ArrayList<Pair> out = new ArrayList<>();
+ 
+        // your code is between this 
+        int sum = 0;
+        for (int i = 0; i < n; i++)
+            {
+                sum += arr[i];
+                if (sum == 0)
+                    out.add(new Pair(0, i));
+                ArrayList<Integer> list = new ArrayList<>();
+
+                if (map.containsKey(sum))
+                {
+                    list = map.get(sum);
+                    for (int it = 0; it < list.size(); it++)
+                    {
+                            out.add(new Pair(list.get(it) + 1, i));
+                    }
                 }
+                list.add(i);
+                map.put(sum, list);
             }
-            map.put(i, temp);
-        }
+        // and this
+           
         return out;
     }
-    
-    static void print(ArrayList<Pair> out){
-        for(int i = 0; i < out.size(); i++){
-            Pair p = out.get(i);
-            System.out.println("Subarray found : " + p.first + " to " + p.second);
-        }
+ 
+ 
+    // Driver code
+    public static void main(String args[])
+    {
+            int[] arr = {6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7};
+            int n = arr.length;
+             
+            ArrayList<Pair> out = findSubArrays(arr, n);
+             
+            // if we did not find any subarray with 0 sum,
+            // then subarray does not exists
+            if (out.size() == 0)
+                System.out.println("No subarray exists");
+            else
+                print(out);
     }
-    
-    public static void main(String[] args) {
-        // TODO code application logic here
-        int[] arr = {6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7};
-        ArrayList<Pair> result = findSubArrays(arr, arr.length);
-        print(result);
-    }
-    
 }
